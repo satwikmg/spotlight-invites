@@ -9,38 +9,12 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   html, body { height:100%; background:#171022; }
   video { width:100%; height:100%; object-fit:contain; display:block; background:#171022; }
-  #tap {
-    position:fixed; inset:0; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:14px;
-    background:#171022; color:#fff; cursor:pointer;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    text-align:center; -webkit-tap-highlight-color:transparent;
-  }
-  #tap .btn {
-    width:84px; height:84px; border-radius:50%; background:#0245B9;
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 8px 30px rgba(2,69,185,.55);
-  }
-  #tap .btn svg { width:36px; height:36px; fill:#fff; margin-left:5px; }
-  #tap p { font-size:17px; font-weight:600; letter-spacing:.3px; }
-  [hidden] { display:none !important; }
 </style>
 </head>
 <body>
-<video id="v" src="../712f450eac36f33a.mp4" preload="auto" playsinline hidden></video>
-<div id="tap">
-  <div class="btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-  <p>Tap to play</p>
-</div>
-<script>
-// nothing renders or plays until the tap; the video only buffers in the
-// background so it starts instantly with sound on the first touch
-var v = document.getElementById("v"), tap = document.getElementById("tap");
-tap.addEventListener("click", function () {
-  tap.hidden = true; v.hidden = false;
-  v.muted = false; v.controls = true;
-  v.play();
-});
-</script>
+<!-- native player only: dark poster, single play control; nothing renders
+     or plays until the person taps it, and the tap allows sound -->
+<video src="../712f450eac36f33a.mp4" controls preload="auto" playsinline
+  poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAECAIAAAArjXluAAAAFElEQVR42mMUF1BiYGBgYmBgwKAAB+sAUQdsq5wAAAAASUVORK5CYII="></video>
 </body>
 </html>
