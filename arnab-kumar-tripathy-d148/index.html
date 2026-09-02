@@ -10,42 +10,36 @@
   html, body { height:100%; background:#171022; }
   video { width:100%; height:100%; object-fit:contain; display:block; background:#171022; }
   #tap {
-    position:fixed; inset:0; cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
+    position:fixed; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:14px;
+    background:#171022; color:#fff; cursor:pointer;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    text-align:center; -webkit-tap-highlight-color:transparent;
   }
-  #tap .pill {
-    position:absolute; left:50%; bottom:9%; transform:translateX(-50%);
-    display:flex; align-items:center; gap:10px;
-    background:#0245B9; color:#fff; padding:14px 26px; border-radius:999px;
-    font-size:17px; font-weight:700; letter-spacing:.3px; white-space:nowrap;
-    box-shadow:0 8px 30px rgba(2,69,185,.6);
-    animation:pulse 1.6s ease-in-out infinite;
+  #tap .btn {
+    width:84px; height:84px; border-radius:50%; background:#0245B9;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 30px rgba(2,69,185,.55);
   }
-  #tap .pill svg { width:22px; height:22px; fill:#fff; flex:none; }
-  @keyframes pulse {
-    0%,100% { transform:translateX(-50%) scale(1); }
-    50% { transform:translateX(-50%) scale(1.06); }
-  }
+  #tap .btn svg { width:36px; height:36px; fill:#fff; margin-left:5px; }
+  #tap p { font-size:17px; font-weight:600; letter-spacing:.3px; }
   [hidden] { display:none !important; }
 </style>
 </head>
 <body>
-<video id="v" src="../2e116e89f825f28e.mp4" autoplay muted playsinline loop></video>
+<video id="v" src="../2e116e89f825f28e.mp4" preload="auto" playsinline hidden></video>
 <div id="tap">
-  <div class="pill">
-    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1c2.9.9 5 3.6 5 6.7s-2.1 5.8-5 6.7v2.1c4-1 7-4.6 7-8.8s-3-7.8-7-8.8z"/></svg>
-    Tap for sound
-  </div>
+  <div class="btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+  <p>Tap to play</p>
 </div>
 <script>
+// nothing renders or plays until the tap; the video only buffers in the
+// background so it starts instantly with sound on the first touch
 var v = document.getElementById("v"), tap = document.getElementById("tap");
-// video autoplays muted the moment the page opens (the only autoplay
-// phones allow); first tap anywhere restarts it from 0 with sound
-v.play().catch(function () {});
 tap.addEventListener("click", function () {
-  v.muted = false; v.loop = false; v.currentTime = 0; v.controls = true;
-  v.play(); tap.hidden = true;
+  tap.hidden = true; v.hidden = false;
+  v.muted = false; v.controls = true;
+  v.play();
 });
 </script>
 </body>
