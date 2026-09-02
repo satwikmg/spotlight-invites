@@ -23,26 +23,33 @@
   }
   #tap .btn svg { width:36px; height:36px; fill:#fff; margin-left:5px; }
   #tap p { font-size:17px; font-weight:600; letter-spacing:.3px; }
+  #tap.loading .btn { animation:spin 1s linear infinite; border-radius:50%; }
+  @keyframes spin { to { transform:rotate(360deg); } }
   [hidden] { display:none !important; }
 </style>
 </head>
 <body>
-<video id="v" src="../83296e4951d53762.mp4" autoplay muted playsinline></video>
+<video id="v" src="../83296e4951d53762.mp4" poster="poster.jpg" autoplay muted playsinline preload="auto"></video>
 <div id="tap">
-  <div class="btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-  <p>Tap to play with sound</p>
+  <div class="btn" id="btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+  <p id="msg">Tap to play with sound</p>
 </div>
 <script>
-var v = document.getElementById("v"), tap = document.getElementById("tap");
-function withSound() {
+var v = document.getElementById("v"), tap = document.getElementById("tap"),
+    msg = document.getElementById("msg"), tapped = false;
+v.play().catch(function () {});
+tap.addEventListener("click", function () {
+  if (tapped) return;
+  tapped = true;
   v.muted = false; v.currentTime = 0; v.controls = true;
-  v.play(); tap.hidden = true;
-}
-tap.addEventListener("click", withSound);
-// try unmuted autoplay first; if the browser allows it, skip the overlay
-v.muted = false;
-v.play().then(function () { v.controls = true; tap.hidden = true; })
- .catch(function () { v.muted = true; v.play().catch(function () {}); });
+  msg.textContent = "Loading…"; tap.classList.add("loading");
+  v.play().catch(function () {});
+});
+// hide the overlay only when sound playback has actually started,
+// so a slow first load shows "Loading…" instead of a dead screen
+v.addEventListener("playing", function () {
+  if (tapped) tap.hidden = true;
+});
 </script>
 </body>
 </html>
