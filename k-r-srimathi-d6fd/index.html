@@ -23,8 +23,6 @@
   }
   #tap .btn svg { width:36px; height:36px; fill:#fff; margin-left:5px; }
   #tap p { font-size:17px; font-weight:600; letter-spacing:.3px; }
-  #tap.loading .btn { animation:spin 1s linear infinite; border-radius:50%; }
-  @keyframes spin { to { transform:rotate(360deg); } }
   [hidden] { display:none !important; }
 </style>
 </head>
@@ -35,20 +33,15 @@
   <p id="msg">Tap to play with sound</p>
 </div>
 <script>
-var v = document.getElementById("v"), tap = document.getElementById("tap"),
-    msg = document.getElementById("msg"), tapped = false;
+// no event dependencies: the tap hides the overlay immediately and starts
+// unmuted playback — identical behavior on every browser; while buffering,
+// the browser's own native spinner shows on the video
+var v = document.getElementById("v"), tap = document.getElementById("tap");
 v.play().catch(function () {});
 tap.addEventListener("click", function () {
-  if (tapped) return;
-  tapped = true;
+  tap.hidden = true;
   v.muted = false; v.currentTime = 0; v.controls = true;
-  msg.textContent = "Loading…"; tap.classList.add("loading");
   v.play().catch(function () {});
-});
-// hide the overlay only when sound playback has actually started,
-// so a slow first load shows "Loading…" instead of a dead screen
-v.addEventListener("playing", function () {
-  if (tapped) tap.hidden = true;
 });
 </script>
 </body>
